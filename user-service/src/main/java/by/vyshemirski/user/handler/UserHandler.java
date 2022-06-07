@@ -1,5 +1,6 @@
-package by.vyshemirski.user.service.handler;
+package by.vyshemirski.user.handler;
 
+import by.vyshemirski.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -12,9 +13,14 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class UserHandler {
 
-    public Mono<ServerResponse> hello(ServerRequest request) {
+    private final UserService userService;
+
+    public Mono<ServerResponse> login(ServerRequest request) {
 
         return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON)
-                .body(BodyInserters.fromValue("Hello, Spring!"));
+                .body(BodyInserters.fromValue(
+                        userService.login(
+                                Long.getLong(String.valueOf(request.attribute("userId").get()))
+                        )));
     }
 }

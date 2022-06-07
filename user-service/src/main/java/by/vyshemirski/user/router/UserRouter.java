@@ -1,6 +1,6 @@
-package by.vyshemirski.user.service.router;
+package by.vyshemirski.user.router;
 
-import by.vyshemirski.user.service.handler.UserHandler;
+import by.vyshemirski.user.handler.UserHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
@@ -16,8 +16,8 @@ public class UserRouter {
     public RouterFunction<ServerResponse> route(UserHandler userHandler) {
 
         return RouterFunctions.route(
-                RequestPredicates.GET("/hello").and(RequestPredicates.accept(MediaType.APPLICATION_JSON)),
-                userHandler::hello
+                RequestPredicates.POST("/login").and(RequestPredicates.accept(MediaType.APPLICATION_JSON)),
+                userHandler::login
         );
     }
 }
