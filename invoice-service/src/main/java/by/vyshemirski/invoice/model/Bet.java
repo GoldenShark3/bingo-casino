@@ -1,4 +1,4 @@
-package by.vyshemirski.invoice.service.model;
+package by.vyshemirski.invoice.model;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;

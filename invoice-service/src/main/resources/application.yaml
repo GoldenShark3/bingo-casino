@@ -1,9 +1,11 @@
 server:
     port: 8000
-
+eureka:
+    instance:
+        prefer-ip-address: true
 spring:
     application:
-        name: invoice-server
+        name: invoice-service
     r2dbc:
         url: r2dbc:mariadb://localhost:3306/invoice-service
         username: root

@@ -16,7 +16,7 @@ public class UserRouter {
     public RouterFunction<ServerResponse> route(UserHandler userHandler) {
 
         return RouterFunctions.route(
-                RequestPredicates.POST("/login").and(RequestPredicates.accept(MediaType.APPLICATION_JSON)),
+                RequestPredicates.POST("/login").and(RequestPredicates.accept(MediaType.TEXT_PLAIN)),
                 userHandler::login
         );
     }
