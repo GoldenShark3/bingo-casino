@@ -4,8 +4,23 @@ eureka:
     instance:
         prefer-ip-address: true
 spring:
+
+    rabbitmq:
+        username: guest
+        password: admin
+
+    cloud:
+        function:
+            definition: gamblingServiceMessage
+        stream:
+            bindings:
+                gamblingServiceMessage-in-0:
+                    group: in
+                    destination: invoice-service
+
     application:
         name: invoice-service
+
     r2dbc:
         url: r2dbc:mariadb://localhost:3306/invoice-service
         username: root
@@ -17,4 +32,5 @@ spring:
         enabled: true
         baseline-on-migrate: true
         baseline-version: 0
+
 

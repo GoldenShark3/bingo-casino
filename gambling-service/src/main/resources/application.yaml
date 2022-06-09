@@ -5,5 +5,9 @@ spring:
     application:
         name: gambling-service
 
+    rabbitmq:
+        username: guest
+        password: admin
+
 app:
     loss_probability: 0.51

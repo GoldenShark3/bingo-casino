@@ -23,4 +23,11 @@ public class UserHandler {
         return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON)
                 .body(userService.login(request.bodyToMono(Long.class)), UserDto.class);
     }
+
+    public Mono<ServerResponse> register(ServerRequest request) {
+
+        return ServerResponse.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(userService.register(request.bodyToMono(UserDto.class)), UserDto.class);
+    }
 }

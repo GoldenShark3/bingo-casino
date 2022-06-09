@@ -1,4 +1,4 @@
-package by.vyshemirski.gambling.dto;
+package by.vyshemirski.user.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,8 +12,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class BetDto {
-    private Long userId;
-    private BigDecimal money;
-    private UUID previousBetId;
+public class DepositMoneyDto {
+    private UUID depositId;
+    private BigDecimal depositAmount;
 }

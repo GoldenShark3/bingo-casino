@@ -18,6 +18,9 @@ public class UserRouter {
         return RouterFunctions.route(
                 RequestPredicates.POST("/login").and(RequestPredicates.accept(MediaType.TEXT_PLAIN)),
                 userHandler::login
+        ).andRoute(
+                RequestPredicates.POST("/register").and(RequestPredicates.accept(MediaType.APPLICATION_JSON)),
+                userHandler::register
         );
     }
 }
