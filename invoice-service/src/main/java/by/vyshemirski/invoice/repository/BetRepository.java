@@ -22,4 +22,6 @@ public interface BetRepository extends ReactiveCrudRepository<Bet, UUID> {
 
     @Query("select sum(money_delta) from bets")
     Mono<Double> calculateTotalBalance();
+
+    Flux<Bet> findAllByUserIdOrderByCreatedAt(Long userId);
 }

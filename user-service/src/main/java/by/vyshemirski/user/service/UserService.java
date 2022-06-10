@@ -40,7 +40,6 @@ public class UserService {
 
     public Mono<UserDto> register(Mono<UserDto> userDtoMono) {
         return userDtoMono.flatMap(userDto -> {
-
             User user = User.builder()
                     .title(userDto.getTitle())
                     .build();

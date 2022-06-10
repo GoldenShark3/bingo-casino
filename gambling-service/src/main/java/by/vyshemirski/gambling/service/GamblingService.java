@@ -17,7 +17,6 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class GamblingService {
 
-    private final BigDecimal TWO = BigDecimal.valueOf(2);
     private final StreamBridge streamBridge;
     @Value("${app.loss_probability}")
     private Double lossProbability;
@@ -43,7 +42,7 @@ public class GamblingService {
                 .betTime(LocalDateTime.now())
                 .previousBetId(betDto.getPreviousBetId())
                 .userId(betDto.getUserId())
-                .moneyDelta(isUserWin ? betDto.getMoney().multiply(TWO) : betDto.getMoney().negate())
+                .moneyDelta(isUserWin ? betDto.getMoney() : betDto.getMoney().negate())
                 .build();
 
         streamBridge.send("invoice-service", betResult);

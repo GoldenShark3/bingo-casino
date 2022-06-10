@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -52,5 +53,31 @@ public class InvoiceService {
                                 .depositAmount(savedBet.getMoneyDelta())
                                 .build()
                 );
+    }
+
+    public Mono<Boolean> withdrawMoney(Long userId, BigDecimal moneyAmount) {
+
+        return betRepository.findAllByUserIdOrderByCreatedAt(userId)
+                .collectList()
+                .map(bets -> {
+                    BigDecimal userBalance = bets.get(0).getMoneyDelta();
+                    for (int i = 1; i < bets.size(); i++) {
+
+                        if (!bets.get(i).getPreviousBetId().equals(bets.get(i - 1).getId())) {
+                            return false;
+                        }
+
+                        if (userBalance.compareTo(bets.get(i).getMoneyDelta()) < 0) {
+                            return false;
+                        }
+
+                        userBalance = userBalance.add(bets.get(i).getMoneyDelta());
+
+                        if (bets.size() == i + 1 && userBalance.compareTo(moneyAmount) < 0) {
+                            return false;
+                        }
+                    }
+                    return true;
+                });
     }
 }
