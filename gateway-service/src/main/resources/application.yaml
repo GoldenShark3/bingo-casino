@@ -1,0 +1,22 @@
+server:
+    port: 8080
+
+spring:
+    application:
+        name: gateway-service
+    cloud:
+        gateway:
+            routes:
+                -   id: userServiceRoute
+                    uri: lb://user-service
+                    predicates:
+                        - Path=/user-service/**
+                    filters:
+                        - StripPrefix=1
+
+                -   id: gamblingServiceRoute
+                    uri: lb://gambling-service
+                    predicates:
+                        - Path=/gambling-service/**
+                    filters:
+                        - StripPrefix=1

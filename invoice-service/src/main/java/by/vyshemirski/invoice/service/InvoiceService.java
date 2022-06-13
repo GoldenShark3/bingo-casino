@@ -67,17 +67,14 @@ public class InvoiceService {
                             return false;
                         }
 
-                        if (userBalance.compareTo(bets.get(i).getMoneyDelta()) < 0) {
+                        if (userBalance.compareTo(bets.get(i).getMoneyDelta().abs()) < 0) {
                             return false;
                         }
 
                         userBalance = userBalance.add(bets.get(i).getMoneyDelta());
 
-                        if (bets.size() == i + 1 && userBalance.compareTo(moneyAmount) < 0) {
-                            return false;
-                        }
                     }
-                    return true;
+                    return userBalance.compareTo(moneyAmount) >= 0;
                 });
     }
 }
