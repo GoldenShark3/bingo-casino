@@ -20,3 +20,10 @@ spring:
                         - Path=/gambling-service/**
                     filters:
                         - StripPrefix=1
+
+                -   id: invoiceServiceRoute
+                    uri: lb://invoice-service
+                    predicates:
+                        - Path=/invoice-service/**
+                    filters:
+                        - StripPrefix=1
