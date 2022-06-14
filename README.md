@@ -1,5 +1,7 @@
 # Bingo casino
-Educational project to learn how to work with microservice architecture and spring reactive. <br/>
+Educational project to learn how to work with microservice architecture and spring reactive. 
+
+A simple casino in which the user places a bet and wins with a 49% chance. <br/>
 
 :heavy_exclamation_mark: Application without error checking. Made just to try use new technologies
 
