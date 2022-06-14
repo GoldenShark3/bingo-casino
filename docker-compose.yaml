@@ -1,0 +1,145 @@
+version: "3.7"
+
+services:
+
+    # ----------- ZIPKIN -----------
+
+    zipkin:
+        image: openzipkin/zipkin
+        container_name: 'zipkin'
+        ports:
+            - "9411:9411"
+        networks:
+            - casino-network
+
+    # ----------- RABBIT -----------
+
+    rabbitmq:
+        image: rabbitmq:3-management-alpine
+        container_name: 'rabbitmq'
+        ports:
+            - 5672:5672
+            - 15672:15672
+        volumes:
+            - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
+            - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+        networks:
+            - casino-network
+
+    # ----------- EUREKA SERVER -----------
+
+    eureka-server:
+        container_name: eureka-server
+        build: ./eureka-server/docker/
+        environment:
+            SPRING_APPLICATION_JSON: '{
+                 "eureka.client.service-url.defaultZone": "http://eureka-server:8761/eureka",
+                 "eureka.client.instance.hostname": "eureka-server",
+                 "spring.zipkin.base-url": "http://zipkin:9411/"
+               }'
+        ports:
+            - "8761:8761"
+        networks:
+            - casino-network
+
+    # ----------- GATEWAY SERVICE -----------
+
+    gateway-service:
+        container_name: gateway-service
+        build: ./gateway-service/docker/
+        environment:
+            SPRING_APPLICATION_JSON: '{
+                 "eureka.client.service-url.defaultZone": "http://eureka-server:8761/eureka",
+                 "spring.zipkin.base-url": "http://zipkin:9411/"
+               }'
+        ports:
+            - "8080:8080"
+        depends_on:
+            - eureka-server
+        networks:
+            - casino-network
+
+    # ----------- GAMBLING-SERVICE -----------
+
+    gambling-service:
+        container_name: gambling-service
+        build: ./gambling-service/docker/
+        environment:
+            SPRING_APPLICATION_JSON: '{
+                 "eureka.client.service-url.defaultZone": "http://eureka-server:8761/eureka",
+                 "spring.zipkin.base-url": "http://zipkin:9411/",
+                 "spring.rabbitmq.host": "rabbitmq",
+                 "spring.rabbitmq.port": "5672"
+               }'
+        depends_on:
+            - eureka-server
+        networks:
+            - casino-network
+
+    # ----------- USER SERVICE -----------
+
+    user-service-database:
+        container_name: user-service-database
+        image: mariadb
+        restart: unless-stopped
+        environment:
+            MARIADB_ROOT_PASSWORD: root
+            MARIADB_DATABASE: user-service
+            MARIADB_USER: root
+            MARIADB_PASSWORD: root
+            MARIADB_ROOT_HOST: jdbc:mariadb://localhost:3306/user-service
+        networks:
+            - casino-network
+
+    user-service:
+        container_name: user-service
+        build: ./user-service/docker/
+        environment:
+            SPRING_APPLICATION_JSON: '{
+                 "spring.r2dbc.url": "r2dbc:mariadb://user-service-database:3306/user-service",
+                 "eureka.client.service-url.defaultZone": "http://eureka-server:8761/eureka",
+                 "spring.zipkin.base-url": "http://zipkin:9411/",
+                 "spring.flyway.url": "jdbc:mariadb://user-service-database:3306/user-service"
+               }'
+        restart: unless-stopped
+        depends_on:
+            - user-service-database
+        networks:
+            - casino-network
+
+    # ----------- INVOICE SERVICE -----------
+
+    invoice-service-database:
+        container_name: invoice-service-database
+        image: mariadb
+        restart: unless-stopped
+        environment:
+            MARIADB_ROOT_PASSWORD: root
+            MARIADB_DATABASE: invoice-service
+            MARIADB_USER: root
+            MARIADB_PASSWORD: root
+            MARIADB_ROOT_HOST: jdbc:mariadb://localhost:3306/invoice-service
+        networks:
+            - casino-network
+
+    invoice-service:
+        container_name: invoice-service
+        build: ./invoice-service/docker/
+        environment:
+            SPRING_APPLICATION_JSON: '{
+                 "spring.r2dbc.url": "r2dbc:mariadb://invoice-service-database:3306/invoice-service",
+                 "eureka.client.service-url.defaultZone": "http://eureka-server:8761/eureka",
+                 "spring.zipkin.base-url": "http://zipkin:9411/",
+                 "spring.rabbitmq.host": "rabbitmq",
+                 "spring.rabbitmq.port": "5672",
+                 "spring.flyway.url": "jdbc:mariadb://invoice-service-database:3306/invoice-service"
+               }'
+        restart: unless-stopped
+        depends_on:
+            - invoice-service-database
+        networks:
+            - casino-network
+
+networks:
+    casino-network:
+        driver: bridge

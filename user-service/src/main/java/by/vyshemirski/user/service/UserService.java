@@ -60,7 +60,7 @@ public class UserService {
     private Mono<Double> retrieveUserBalance(Long userId) {
 
         return webClient.get()
-                .uri("http://invoice-service/status/" + userId)
+                .uri("http://gateway-service/invoice-service/status/" + userId)
                 .retrieve()
                 .bodyToMono(Double.class);
     }
@@ -68,7 +68,7 @@ public class UserService {
     private Mono<UUID> retrieveLastUserBet(Long userId) {
 
         return webClient.get()
-                .uri("http://invoice-service/user/" + userId + "/last-bet")
+                .uri("http://gateway-service/invoice-service/user/" + userId + "/last-bet")
                 .retrieve()
                 .bodyToMono(UUID.class);
     }
@@ -76,7 +76,7 @@ public class UserService {
     private Mono<DepositMoneyDto> depositMoney(Long userId) {
 
         return webClient.post()
-                .uri("http://invoice-service/user/" + userId + "/money")
+                .uri("http://gateway-service/invoice-service/user/" + userId + "/money")
                 .retrieve()
                 .bodyToMono(DepositMoneyDto.class);
     }
