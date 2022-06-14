@@ -7,7 +7,7 @@ spring:
 
     rabbitmq:
         username: guest
-        password: admin
+        password: guest
 
 app:
     loss_probability: 0.51

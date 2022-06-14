@@ -69,7 +69,8 @@ services:
                  "eureka.client.service-url.defaultZone": "http://eureka-server:8761/eureka",
                  "spring.zipkin.base-url": "http://zipkin:9411/",
                  "spring.rabbitmq.host": "rabbitmq",
-                 "spring.rabbitmq.port": "5672"
+                 "spring.rabbitmq.port": "5672",
+                 "spring.rabbitmq.password": "guest"
                }'
         depends_on:
             - eureka-server
@@ -129,10 +130,11 @@ services:
             SPRING_APPLICATION_JSON: '{
                  "spring.r2dbc.url": "r2dbc:mariadb://invoice-service-database:3306/invoice-service",
                  "eureka.client.service-url.defaultZone": "http://eureka-server:8761/eureka",
+                 "spring.flyway.url": "jdbc:mariadb://invoice-service-database:3306/invoice-service",
                  "spring.zipkin.base-url": "http://zipkin:9411/",
                  "spring.rabbitmq.host": "rabbitmq",
                  "spring.rabbitmq.port": "5672",
-                 "spring.flyway.url": "jdbc:mariadb://invoice-service-database:3306/invoice-service"
+                 "spring.rabbitmq.password": "guest"
                }'
         restart: unless-stopped
         depends_on:
