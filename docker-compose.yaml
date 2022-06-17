@@ -18,8 +18,8 @@ services:
         image: rabbitmq:3-management-alpine
         container_name: 'rabbitmq'
         ports:
-            - 5672:5672
-            - 15672:15672
+            - "5672:5672"
+            - "15672:15672"
         volumes:
             - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
             - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
@@ -30,8 +30,12 @@ services:
 
     eureka-server:
         container_name: eureka-server
-        build: ./eureka-server/docker/
+        build:
+            context: ./eureka-server
+            dockerfile: ./docker/Dockerfile
+        hostname: eureka-server
         environment:
+            GRAYLOG_HOST: 'graylog'
             SPRING_APPLICATION_JSON: '{
                  "eureka.client.service-url.defaultZone": "http://eureka-server:8761/eureka",
                  "eureka.client.instance.hostname": "eureka-server",
@@ -46,8 +50,12 @@ services:
 
     gateway-service:
         container_name: gateway-service
-        build: ./gateway-service/docker/
+        build:
+            context: ./gateway-service
+            dockerfile: ./docker/Dockerfile
+        hostname: gateway-service
         environment:
+            GRAYLOG_HOST: 'graylog'
             SPRING_APPLICATION_JSON: '{
                  "eureka.client.service-url.defaultZone": "http://eureka-server:8761/eureka",
                  "spring.zipkin.base-url": "http://zipkin:9411/"
@@ -63,8 +71,12 @@ services:
 
     gambling-service:
         container_name: gambling-service
-        build: ./gambling-service/docker/
+        build:
+            context: ./gambling-service
+            dockerfile: ./docker/Dockerfile
+        hostname: gambling-service
         environment:
+            GRAYLOG_HOST: 'graylog'
             SPRING_APPLICATION_JSON: '{
                  "eureka.client.service-url.defaultZone": "http://eureka-server:8761/eureka",
                  "spring.zipkin.base-url": "http://zipkin:9411/",
@@ -94,8 +106,12 @@ services:
 
     user-service:
         container_name: user-service
-        build: ./user-service/docker/
+        build:
+            context: ./user-service
+            dockerfile: ./docker/Dockerfile
+        hostname: user-service
         environment:
+            GRAYLOG_HOST: 'graylog'
             SPRING_APPLICATION_JSON: '{
                  "spring.r2dbc.url": "r2dbc:mariadb://user-service-database:3306/user-service",
                  "eureka.client.service-url.defaultZone": "http://eureka-server:8761/eureka",
@@ -125,8 +141,12 @@ services:
 
     invoice-service:
         container_name: invoice-service
-        build: ./invoice-service/docker/
+        build:
+            context: ./invoice-service
+            dockerfile: ./docker/Dockerfile
+        hostname: invoice-service
         environment:
+            GRAYLOG_HOST: 'graylog'
             SPRING_APPLICATION_JSON: '{
                  "spring.r2dbc.url": "r2dbc:mariadb://invoice-service-database:3306/invoice-service",
                  "eureka.client.service-url.defaultZone": "http://eureka-server:8761/eureka",
@@ -144,4 +164,4 @@ services:
 
 networks:
     casino-network:
-        driver: bridge
+        external: true

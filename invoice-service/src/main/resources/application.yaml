@@ -35,5 +35,3 @@ spring:
         url: jdbc:mariadb://localhost:3306/invoice-service
         password: root
         user: root
-
-

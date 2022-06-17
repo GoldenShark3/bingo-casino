@@ -3,7 +3,7 @@ server:
 eureka:
     instance:
         prefer-ip-address: true
-        instance-id: ${random.value}
+        instance-id: ${spring.application.name}-${random.int}
 spring:
     application:
         name: user-service

@@ -5,6 +5,7 @@ import by.vyshemirski.user.dto.UserDto;
 import by.vyshemirski.user.model.User;
 import by.vyshemirski.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -18,13 +19,14 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserService {
     private final UserRepository userRepository;
     private final WebClient webClient;
 
     public Mono<UserDto> login(Mono<Long> userId) {
         Mono<User> foundedUserMono = userRepository.findById(userId);
-
+        log.info("LOGIN log");
         return foundedUserMono
                 .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.FORBIDDEN)))
                 .flatMap(foundedUser ->
