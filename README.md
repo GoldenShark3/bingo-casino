@@ -30,6 +30,7 @@ A simple casino in which the user places a bet and wins with a 49% chance. <br/>
 2. localhost:9411 - Zipkin.
 3. localhost:8761 - Eureka.
 4. localhost:8080 - Spring cloud gateway
+5. localhost:9000 - Graylog
 
 # Project schema
 
