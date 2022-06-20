@@ -14,12 +14,9 @@
         </layout>
     </appender>
 
-    <root level="WARN">
-        <appender-ref ref="GELF"/>
-    </root>
-
     <root level="INFO">
         <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="GELF"/>
     </root>
 
 </configuration>
