@@ -1,4 +1,4 @@
-package by.vyshemirski.invoice.dto;
+package by.vyshemirski.document.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,10 +13,12 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class BetMessageDto {
+public class BetHistoryDto {
     private Long userId;
     private UUID betId;
     private UUID previousBetId;
     private BigDecimal moneyDelta;
     private LocalDateTime betTime;
+    private Boolean isLegal;
+    private BigDecimal balanceAtBet;
 }

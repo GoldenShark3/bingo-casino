@@ -1,6 +1,10 @@
 server:
     port: 8080
 
+eureka:
+    instance:
+        prefer-ip-address: true
+
 spring:
     application:
         name: gateway-service
@@ -25,5 +29,12 @@ spring:
                     uri: lb://invoice-service
                     predicates:
                         - Path=/invoice-service/**
+                    filters:
+                        - StripPrefix=1
+
+                -   id: documentServiceRoute
+                    uri: lb://document-service
+                    predicates:
+                        - Path=/document-service/**
                     filters:
                         - StripPrefix=1

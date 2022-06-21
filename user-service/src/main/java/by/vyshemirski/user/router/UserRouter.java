@@ -21,6 +21,9 @@ public class UserRouter {
         ).andRoute(
                 RequestPredicates.POST("/register").and(RequestPredicates.accept(MediaType.APPLICATION_JSON)),
                 userHandler::register
+        ).andRoute(
+                RequestPredicates.GET("/title/{userId}").and(RequestPredicates.accept(MediaType.APPLICATION_JSON)),
+                userHandler::retrieveUserTitleById
         );
     }
 }

@@ -1,6 +1,7 @@
 package by.vyshemirski.invoice.service;
 
-import by.vyshemirski.invoice.dto.BetMessageDto;
+import by.vyshemirski.invoice.dto.BetDto;
+import by.vyshemirski.invoice.mapper.BetMapper;
 import by.vyshemirski.invoice.model.Bet;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -12,21 +13,15 @@ import java.util.function.Consumer;
 @RequiredArgsConstructor
 public class MessagesService {
 
-    private final InvoiceService invoiceService;
+    private final BetService betService;
+    private final BetMapper betMapper;
 
     @Bean
-    public Consumer<BetMessageDto> gamblingServiceMessage() {
+    public Consumer<BetDto> gamblingServiceMessage() {
 
         return (message -> {
-            Bet bet = Bet.builder()
-                    .id(message.getBetId())
-                    .createdAt(message.getBetTime())
-                    .moneyDelta(message.getMoneyDelta())
-                    .previousBetId(message.getPreviousBetId())
-                    .userId(message.getUserId())
-                    .build();
-
-            invoiceService.save(bet).subscribe(System.out::println);
+            Bet bet = betMapper.toEntity(message);
+            betService.save(bet).subscribe(System.out::println);
         });
     }
 

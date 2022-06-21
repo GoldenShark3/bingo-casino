@@ -1,0 +1,114 @@
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <title></title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        @page {
+            size: A4 landscape;
+
+            @top-center {
+                content: element(header);
+            }
+
+            @bottom-center {
+                content: counter(page) ' / ' counter(pages);
+                font-size: 20px;
+                font-weight: bold;
+            }
+        }
+
+        .container {
+            width: 100vw;
+            height: 100vh;
+            max-width: 100vw;
+            max-height: 100vh;
+        }
+
+        /* HEADER */
+        .header {
+            width: 100%;
+            height: 50px;
+            text-align: center;
+            position: running(header);
+        }
+
+        .header__title {
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* CONTENT */
+
+        .container__content {
+            width: 100%;
+            height: calc(100% - 102px);
+        }
+
+        thead, th, td, tr {
+            font-size: 20px;
+            border: 1px solid black;
+            page-break-inside: avoid;
+        }
+
+        table {
+            -fs-table-paginate: paginate;
+            -fs-page-break-min-height: 1.5cm;
+            border-collapse: collapse;
+            border: 1px solid black;
+        }
+
+        .container__table {
+            width: 100%;
+            text-align: center;
+        }
+
+        .container__table_header {
+            font-weight: bold;
+        }
+
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <div class="header__title">
+            <h1 th:text="${userTitle}">User title</h1>
+        </div>
+    </div>
+
+    <div class="container__content">
+        <table class="container__table">
+            <thead>
+            <tr>
+                <th class="container__table_header">ID</th>
+                <th class="container__table_header">Previous bet ID</th>
+                <th class="container__table_header">Bet time</th>
+                <th class="container__table_header">Money</th>
+                <th class="container__table_header">Balance</th>
+                <th class="container__table_header">Is Legal</th>
+            </tr>
+            </thead>
+
+            <th:block th:each="bet : ${bets}">
+                <tr>
+                    <td th:text="${bet.betId}"></td>
+                    <td th:text="${bet.previousBetId} != null ? ${bet.previousBetId} : ''"></td>
+                    <td th:text="${bet.betTime}"></td>
+                    <td th:text="${bet.moneyDelta}"></td>
+                    <td th:text="${bet.balanceAtBet}"></td>
+                    <td th:style="${bet.isLegal} ? 'background: green' : 'background: red'"></td>
+                </tr>
+            </th:block>
+        </table>
+    </div>
+</div>
+</body>
+</html>
