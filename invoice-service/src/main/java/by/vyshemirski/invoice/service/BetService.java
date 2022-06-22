@@ -1,8 +1,6 @@
 package by.vyshemirski.invoice.service;
 
-import by.vyshemirski.invoice.dto.BetDto;
 import by.vyshemirski.invoice.dto.history.BetHistoryDto;
-import by.vyshemirski.invoice.dto.history.BetHistoryListDto;
 import by.vyshemirski.invoice.mapper.BetMapper;
 import by.vyshemirski.invoice.model.Bet;
 import by.vyshemirski.invoice.repository.BetRepository;
@@ -48,14 +46,14 @@ public class BetService {
     List<BetHistoryDto> checkAllBetsForLegitimacyAndTransferToDto(List<Bet> bets) {
         BetHistoryDto startUserBonus = betMapper.toHistoryDto(bets.get(0), true, BigDecimal.ZERO);
         List<BetHistoryDto> betDtoList = new ArrayList<>(List.of(startUserBonus));
-
         BigDecimal userBalance = bets.get(0).getMoneyDelta();
+        boolean isBetLegal = true;
 
         for (int i = 1; i < bets.size(); i++) {
             Bet currentBet = bets.get(i);
             Bet previousBet = bets.get(i - 1);
 
-            boolean isBetLegal = isBetLegal(currentBet, previousBet, userBalance);
+            isBetLegal = isBetLegal && isBetLegal(currentBet, previousBet, userBalance);
             BetHistoryDto betDto = betMapper.toHistoryDto(currentBet, isBetLegal, userBalance);
             betDtoList.add(betDto);
 
