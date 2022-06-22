@@ -12,6 +12,7 @@ A simple casino in which the user places a bet and wins with a 49% chance. <br/>
 + Spring cloud stream (RabbitMQ)
 + Spring cloud netflix (Eureka)
 + Spring cloud gateway
++ Thymeleaf + Flying-saucer-pdf
 + R2DBC
 + Zipkin
 + Graylog
@@ -34,6 +35,7 @@ A simple casino in which the user places a bet and wins with a 49% chance. <br/>
 
 # Project schema
 
-![bing-casino](https://user-images.githubusercontent.com/72407856/173547208-43799483-153d-42a2-9b79-8c0679eb3ffc.png)
+![bing-casino](https://user-images.githubusercontent.com/72407856/174990650-6d859274-60b4-4084-93ae-4b7bd02bb730.png)
+
 
 
